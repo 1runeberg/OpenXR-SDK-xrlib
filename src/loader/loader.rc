@@ -1,82 +1,76 @@
-//
-// Copyright (c) 2017-2025 The Khronos Group Inc.
-// Copyright (c) 2017 Valve Corporation
-// Copyright (c) 2017 LunarG, Inc.
-//
-// SPDX-License-Identifier: Apache-2.0 OR MIT
-//
-// Initial Author: Mark Young <marky@LunarG.com>
-//
-
-// The years here should always match the Khronos line above!
-#define COPYRIGHT_NOTICE "2017-2025 The Khronos Group Inc. and others"
-
-// REUSE-IgnoreStart
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-// Start customize section
-// Edit this section for your build
-// The normal OpenXR CMake build will define the XR_CURRENT_API_*_VERSION
-// symbols automatically so no manual changes are needed in that case.
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-#define VERSION_MAJOR               XR_CURRENT_API_MAJOR_VERSION
-#define VERSION_MINOR               XR_CURRENT_API_MINOR_VERSION
-#define VERSION_PATCH               XR_CURRENT_API_PATCH_VERSION
-#define VERSION_BUILDNO             0
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-// End of customize section
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+/*
+ * xrlib:
+ *      Copyright (c) 2024-25 Rune Berg (http://runeberg.io | https://github.com/1runeberg)
+ *      Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+ *      SPDX-License-Identifier: Apache-2.0
+ *
+ * openxr_loader:
+ *      Copyright (c) 2017-2024, The Khronos Group Inc.
+ *      Copyright (c) 2017 Valve Corporation
+ *      Copyright (c) 2017 LunarG, Inc.
+ *
+ *      SPDX-License-Identifier: Apache-2.0 OR MIT
+ *      Initial Author: Mark Young <marky@LunarG.com>
+ *
+ * =============================================================================
+ * THIS WINDOWS RESOURCE FILE REPLACES OPENXR'S LOADER RC DURING XRLIB CMAKE RUN
+ * =============================================================================
+ */
 
 #ifdef __MINGW32__
-#include "winresrc.h"
+    #include "winresrc.h"   // For GCC/GNU toolchain
 #else
-#include "winres.h"
+    #include "winres.h"     // MSVC toolchain
 #endif
 
-#define VER_FILE_VERSION            VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILDNO
+#define XRLIB_NAME "xrlib"
+#define XRLIB_VERSION_MAJOR 1
+#define XRLIB_VERSION_MINOR 0
+#define XRLIB_VERSION_PATCH 0
+#define XRLIB_VERSION_TWEAK 0
 
-#define STRINGIZE2(s) #s
-#define STRINGIZE(s) STRINGIZE2(s)
+#define XRLIB_VERSION XRLIB_VERSION_MAJOR "." XRLIB_VERSION_MINOR "." XRLIB_VERSION_PATCH "." XRLIB_VERSION_TWEAK
+#define OPENXR_VERSION "1.1.38"
+#define XRLIB_PRODUCT_NAME "xrlib 1.0.0.0 | openxr_loader 1.1.38"
 
-#define VER_FILE_VERSION_STR        STRINGIZE(VERSION_MAJOR)      \
-                                   "." STRINGIZE(VERSION_MINOR)   \
-                                   "." STRINGIZE(VERSION_PATCH)   \
-                                   "." STRINGIZE(VERSION_BUILDNO)
-
+#define  XRLIB_COMPANY_NAME "https://github.com/1runeberg/xrlib"         
+#define  XRLIB_FILE_DESC "xrlib - OpenXR wrapper library for modern C++"     
+#define  XRLIB_FILENAME XRLIB_NAME ".dll"         
+#define  XRLIB_COPYRIGHT "xrlib (c) 2024 Rune Berg | openxr_loader (c) 2017-24 The Khronos Group Inc." 
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION VER_FILE_VERSION
- PRODUCTVERSION VER_FILE_VERSION
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS VS_FF_DEBUG
-#else
- FILEFLAGS 0x0L
-#endif
+ FILEVERSION XRLIB_VERSION_MAJOR,XRLIB_VERSION_MINOR,XRLIB_VERSION_PATCH,XRLIB_VERSION_TWEAK        // Define the file version using macros from version.h
+ PRODUCTVERSION XRLIB_VERSION_MAJOR,XRLIB_VERSION_MINOR,XRLIB_VERSION_PATCH,XRLIB_VERSION_TWEAK     // Define the product version using macros from version.h
+ FILEFLAGSMASK 0x3fL        // Specify which flags in FILEFLAGS are valid (0x3fL means all six defined flags can be used)
 
- FILEOS 0x00000L
- FILETYPE VFT_DLL
- FILESUBTYPE 0x0L
+ #ifdef _DEBUG
+    FILEFLAGS VS_FF_DEBUG   // If this is a debug build, set the debug flag
+ #else
+    FILEFLAGS 0x0L          // Otherwise, no special flags are set
+ #endif
+
+ FILEOS VOS_NT_WINDOWS32    // Targeting Windows NT-based OS (both 32-bit and 64-bit)
+ FILETYPE VFT_DLL           // Identify as a shared library (dll)
+ FILESUBTYPE VFT2_UNKNOWN   // No specific subtype
+
 BEGIN
-    BLOCK "StringFileInfo"
+    BLOCK "StringFileInfo"  
     BEGIN
-        BLOCK "04090000"
+        BLOCK "040904B0"    // Language and code page: 0x0409 is U.S. English, 0x04B0 is Unicode
         BEGIN
-            VALUE "FileDescription", "OpenXR Loader"
-            VALUE "FileVersion", VER_FILE_VERSION_STR
-            VALUE "LegalCopyright", "Copyright (C) " COPYRIGHT_NOTICE
-            VALUE "ProductName", "OpenXR Loader"
-            VALUE "ProductVersion", VER_FILE_VERSION_STR
+            VALUE "CompanyName", XRLIB_COMPANY_NAME       
+            VALUE "FileDescription", XRLIB_FILE_DESC     
+            VALUE "FileVersion", XRLIB_VERSION            
+            VALUE "InternalName", XRLIB_NAME                
+            VALUE "OriginalFilename", XRLIB_FILENAME      
+            VALUE "ProductName", XRLIB_PRODUCT_NAME          
+            VALUE "ProductVersion", XRLIB_VERSION      
+            VALUE "Copyright",  XRLIB_COPYRIGHT
         END
     END
-    BLOCK "VarFileInfo"
+    BLOCK "VarFileInfo"  
     BEGIN
-        VALUE "Translation", 0x409, 0000
+        VALUE "Translation", 0x1409, 0x04B0  // Language: 0x0409 (U.S. English), Code page: 0x04B0 (Unicode)
     END
 END
+ 
