@@ -170,7 +170,7 @@ cmake_dependent_option(
     "Use system jsoncpp instead of vendored source"
     ON
     "JSONCPP_FOUND"
-    OFF
+    ON
 )
 cmake_dependent_option(
     BUILD_WITH_STD_FILESYSTEM
