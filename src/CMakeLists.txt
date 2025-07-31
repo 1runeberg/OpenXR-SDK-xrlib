@@ -165,12 +165,15 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/conformance/CMakeLists.txt")
 endif()
 include(CMakeDependentOption)
 
+
+# [xrlib] Force builds to nor use system jsoncpp 
+# [xrlib] This is due to an issue when subsuming the loader (via objects)
 cmake_dependent_option(
     BUILD_WITH_SYSTEM_JSONCPP
     "Use system jsoncpp instead of vendored source"
-    ON
+    OFF
     "JSONCPP_FOUND"
-    ON
+    OFF
 )
 cmake_dependent_option(
     BUILD_WITH_STD_FILESYSTEM
